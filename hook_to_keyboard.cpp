@@ -41,14 +41,21 @@ LRESULT WINAPI KeyboardCallback(int nCode, WPARAM wParam, LPARAM lParam)
         auto kbdStruct = *((KBDLLHOOKSTRUCT*) lParam);
         DWORD wVirtualKey = kbdStruct.vkCode;
 
-        if(kbdStruct.vkCode == VK_F1)
+
+        switch(wParam)
         {
-            std::cout << "F1 was pressed, unhooking and terminating process!\n";
-            suicide = true;
-            return UnhookWindowsHookEx(keyboard_hook);
+            case WM_KEYDOWN:
+                if(kbdStruct.vkCode == VK_F1)
+                {
+                    std::cout << "F1 was pressed, unhooking and terminating process!\n";
+                    suicide = true;
+                    return UnhookWindowsHookEx(keyboard_hook);
+                }
+                std::cout << wVirtualKey;
+                std::cout << "\n";
+
+            case WM_IME_KEYUP:
         }
-        std::cout << wVirtualKey;
-        std::cout << "\n";
     }
 
     //std::cout << "Hi!\n";
